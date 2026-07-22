@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Order Successful{% endblock %}
+{% block content %}
+<main class="container narrow top-gap">
+  <section class="card center">
+    <div class="success-icon">✓</div>
+    <h1>Order place ho gaya</h1>
+    <p>Tracking code ko sambhal kar rakho:</p>
+    <div class="tracking-code">{{ tracking_code }}</div>
+    <p>Total: <strong>₹{{ total }}</strong></p>
+    <p>Payment: <strong>{{ payment_method }}</strong></p>
+    {% if payment_method == 'UPI' %}
+      {% if upi_id %}
+      <p>UPI ID: <strong>{{ upi_id }}</strong></p>
+      <p class="hint">Payment karne ke baad shopkeeper se confirmation lein.</p>
+      {% else %}
+      <p class="hint">UPI ID admin settings me add karni baaki hai.</p>
+      {% endif %}
+    {% endif %}
+    <form method="get" action="{{ url_for('track_order') }}">
+      <input type="hidden" name="tracking_code" value="{{ tracking_code }}">
+      <input type="hidden" name="phone" value="{{ phone }}">
+      <button type="submit">Order Track Karein</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

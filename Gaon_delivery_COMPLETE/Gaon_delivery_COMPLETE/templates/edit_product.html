@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Edit Product{% endblock %}
+{% block content %}
+<main class="container narrow top-gap">
+  <section class="card">
+    <h1>Product edit</h1>
+    <form method="post" enctype="multipart/form-data">
+      <label>Naam</label><input name="name" value="{{ product.name }}" required>
+      <label>Price ₹</label><input type="number" name="price" value="{{ product.price }}" min="1" required>
+      <label>Stock</label><input type="number" name="stock" value="{{ product.stock }}" min="0" required>
+      <label>Nayi photo optional</label><input type="file" name="image" accept=".png,.jpg,.jpeg,.webp,image/*">
+      <label class="check"><input type="checkbox" name="is_available" {% if product.is_available %}checked{% endif %}> Customer ko visible</label>
+      <label class="check"><input type="checkbox" name="is_popular" {% if product.is_popular %}checked{% endif %}> Popular product</label>
+      <button type="submit">Save</button>
+      <a class="button ghost" href="{{ url_for('admin_products') }}">Cancel</a>
+    </form>
+  </section>
+</main>
+{% endblock %}

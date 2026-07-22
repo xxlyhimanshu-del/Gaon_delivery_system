@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Order History{% endblock %}
+{% block content %}
+<main class="container narrow top-gap">
+  <section class="card">
+    <h1>Order History</h1>
+    <form method="post">
+      <label>Mobile number</label>
+      <input name="phone" value="{{ phone }}" maxlength="10" required>
+      <button class="full">Orders Dekho</button>
+    </form>
+  </section>
+  {% for order in orders %}
+  <section class="card history-card">
+    <div class="order-head">
+      <div><h3>{{ order.tracking_code }}</h3><p>{{ order.created_at }}</p></div>
+      <strong>₹{{ order.total }}</strong>
+    </div>
+    <p>Status: {{ order.statuses }}</p>
+    <p>Payment: {{ order.payment_method }} · {{ order.payment_status }}</p>
+    <a class="button ghost" href="{{ url_for('track_order', tracking_code=order.tracking_code, phone=order.phone) }}">Track</a>
+  </section>
+  {% endfor %}
+</main>
+{% endblock %}

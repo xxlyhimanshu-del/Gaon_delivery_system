@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Orders{% endblock %}
+{% block content %}
+<main class="container">
+  {% include "admin_nav.html" %}
+  <h1>Orders</h1>
+  {% for entry in orders %}
+  {% set order = entry.order %}
+  <article class="card order-card">
+    <div class="order-head">
+      <div><h2>{{ order.tracking_code }}</h2><p>{{ order.customer_name }} · {{ order.phone }}</p></div>
+      <span class="status status-{{ order.status|lower|replace(' ', '-') }}">{{ order.status }}</span>
+    </div>
+    <p><strong>Shop:</strong> {{ order.status_shop_name }}</p>
+    <p><strong>Address:</strong> {{ order.address }}</p>
+    <p><strong>Payment:</strong> {{ order.payment_method }} · {{ order.payment_status }}</p>
+    <a class="button whatsapp" target="_blank" href="https://wa.me/91{{ order.phone }}?text=Namaste%20{{ order.customer_name }}%20aapka%20order%20{{ order.tracking_code }}%20update%20hua%20hai">WhatsApp customer</a>
+    {% for item in entry.items %}
+    <div class="bill-row"><span>{{ item.product_name }} × {{ item.quantity }}</span><strong>₹{{ item.subtotal }}</strong></div>
+    {% endfor %}
+    <form class="inline-form" method="post" action="{{ url_for('update_order_status', order_id=order.id, shop_id=order.shop_id) }}">
+      <select name="status">
+        {% for status in statuses %}
+        <option value="{{ status }}" {% if status == order.status %}selected{% endif %}>{{ status }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Update status</button>
+    </form>
+  </article>
+  {% else %}<div class="card">Abhi koi order nahi hai.</div>{% endfor %}
+</main>
+{% endblock %}

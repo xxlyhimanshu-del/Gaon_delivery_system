@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Delivery Panel{% endblock %}
+{% block content %}
+<main class="container">
+  {% include "admin_nav.html" %}
+  <h1>Delivery Partner Panel</h1>
+  {% for order in orders %}
+  <article class="card order-card">
+    <div class="order-head"><h2>{{ order.tracking_code }}</h2><strong>₹{{ order.total }}</strong></div>
+    <p><strong>{{ order.customer_name }}</strong> · {{ order.phone }}</p>
+    <p>{{ order.address }}</p>
+    <p>Status: {{ order.statuses }}</p>
+    <a class="button whatsapp" target="_blank" href="https://wa.me/91{{ order.phone }}">WhatsApp</a>
+    <a class="button ghost" target="_blank" href="https://www.google.com/maps/search/?api=1&query={{ order.address|urlencode }}">Open Map</a>
+    <form class="inline-form" method="post" action="{{ url_for('delivery_update', order_id=order.id) }}">
+      <select name="status">
+        <option>Out for Delivery</option>
+        <option>Delivered</option>
+      </select>
+      <button>Update</button>
+    </form>
+  </article>
+  {% else %}<div class="card">Delivery ke liye abhi koi order nahi hai.</div>{% endfor %}
+</main>
+{% endblock %}

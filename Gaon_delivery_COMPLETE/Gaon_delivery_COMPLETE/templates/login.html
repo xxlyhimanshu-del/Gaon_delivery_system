@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Shopkeeper Login{% endblock %}
+{% block content %}
+<main class="container narrow top-gap">
+  <section class="card">
+    <h1>Shopkeeper Login</h1>
+    {% if error %}<div class="error-box">{{ error }}</div>{% endif %}
+    <form method="post">
+      <label>Username</label>
+      <input name="username" required>
+      <label>Password</label>
+      <input type="password" name="password" required>
+      <button class="full" type="submit">Login</button>
+    </form>
+    <p class="hint">Master: admin / 1234 · Delivery: delivery / 1234</p>
+  </section>
+</main>
+{% endblock %}

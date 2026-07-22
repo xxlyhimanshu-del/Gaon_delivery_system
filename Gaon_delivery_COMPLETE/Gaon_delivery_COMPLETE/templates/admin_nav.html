@@ -1,0 +1,13 @@
+<div class="admin-nav">
+  <a href="{{ url_for('dashboard') }}">Dashboard</a>
+  <a href="{{ url_for('admin_orders') }}">Orders</a>
+  <a href="{{ url_for('admin_products') }}">Products</a>
+  {% if session_role in ['master', 'delivery'] %}
+  <a href="{{ url_for('delivery_panel') }}">Delivery Panel</a>
+  {% endif %}
+  {% if session_role == 'master' %}
+  <a href="{{ url_for('shops') }}">Shops</a>
+  <a href="{{ url_for('settings') }}">Settings</a>
+  {% endif %}
+  <span>{{ session_shop_name }}</span>
+</div>

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Shops{% endblock %}
+{% block content %}
+<main class="container">
+  {% include "admin_nav.html" %}
+  <div class="admin-grid">
+    <section class="card">
+      <h2>Nayi shop add karo</h2>
+      <form method="post" action="{{ url_for('add_shop') }}">
+        <label>Shop name</label><input name="name" required>
+        <label>Login username</label><input name="username" required>
+        <label>Password</label><input type="password" name="password" minlength="4" required>
+        <label>Phone optional</label><input name="phone">
+        <button class="full" type="submit">Add shop</button>
+      </form>
+    </section>
+    <section>
+      {% for shop in shops %}
+      <article class="card product-admin">
+        <div><h3>{{ shop.name }}</h3><p>Username: {{ shop.username }} · {{ shop.phone or 'No phone' }}</p></div>
+        <form method="post" action="{{ url_for('toggle_shop', shop_id=shop.id) }}">
+          <button class="{% if shop.is_active %}danger{% endif %}" type="submit">{% if shop.is_active %}Disable{% else %}Enable{% endif %}</button>
+        </form>
+      </article>
+      {% endfor %}
+    </section>
+  </div>
+</main>
+{% endblock %}

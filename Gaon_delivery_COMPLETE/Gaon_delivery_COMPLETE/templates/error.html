@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Error{% endblock %}
+{% block content %}
+<main class="container narrow top-gap"><section class="card center"><h1>{{ message }}</h1><a class="button" href="{{ url_for('home') }}">Home</a></section></main>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Gaon Grocery Delivery{% endblock %}
+{% block content %}
+<header class="hero">
+  <div>
+    <span class="eyebrow">Fast village delivery</span>
+    <h1>Ghar baithe gaon ki dukaan se samaan mangao</h1>
+    <p>Multiple local shops, live cart aur order tracking — sab ek jagah.</p>
+  </div>
+</header>
+
+<main class="container">
+  <form method="get" class="filters card">
+    <input name="q" value="{{ search }}" placeholder="Product ya shop search karo">
+    <select name="shop">
+      <option value="">Sabhi shops</option>
+      {% for shop in shops %}
+      <option value="{{ shop.id }}" {% if selected_shop == shop.id %}selected{% endif %}>{{ shop.name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Search</button>
+    <a class="button ghost" href="{{ url_for('home') }}">Reset</a>
+  </form>
+
+  <form method="post" action="{{ url_for('checkout') }}" id="checkout-form">
+    <div class="product-grid">
+      {% for product in products %}
+      <article class="product-card" data-product-id="{{ product.id }}">
+        <button type="button" class="wishlist-btn" data-id="{{ product.id }}" aria-label="Wishlist">♡</button>
+        {% if product.image_url %}
+        <img src="{{ url_for('static', filename='uploads/' + product.image_url) }}" alt="{{ product.name }}">
+        {% else %}
+        <div class="product-placeholder">🛍️</div>
+        {% endif %}
+        <div class="product-body">
+          {% if product.is_popular %}<span class="badge">Popular</span>{% endif %}
+          <h3>{{ product.name }}</h3>
+          <p class="shop-name">🏪 {{ product.shop_name }}</p>
+          <div class="product-meta">
+            <strong>₹{{ product.price }}</strong>
+            <span>{{ product.stock }} left</span>
+          </div>
+          <div class="qty-control" data-max="{{ product.stock }}">
+            <button type="button" class="qty-minus">−</button>
+            <input class="qty-input" name="quantity_{{ product.id }}" value="0" min="0" max="{{ product.stock }}" readonly data-price="{{ product.price }}">
+            <button type="button" class="qty-plus">+</button>
+          </div>
+        </div>
+      </article>
+      {% else %}
+      <div class="card empty">Koi matching product nahi mila.</div>
+      {% endfor %}
+    </div>
+
+    <section class="checkout-layout">
+      <div class="card">
+        <h2>Delivery details</h2>
+        <label>Naam</label>
+        <input name="customer_name" required>
+        <label>10 digit mobile number</label>
+        <input name="phone" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" required>
+        <label>Poora address</label>
+        <textarea name="address" rows="4" required></textarea>
+
+        <label>Payment method</label>
+        <select name="payment_method">
+          <option value="COD">Cash on Delivery</option>
+          <option value="UPI">UPI / Online Payment</option>
+        </select>
+
+        <label>Coupon code</label>
+        <input name="coupon_code" id="coupon-code" placeholder="{{ coupon_code }}">
+        <p class="hint">Demo coupon: {{ coupon_code }}</p>
+      </div>
+
+      <aside class="card bill-card">
+        <h2>Cart summary</h2>
+        <div class="bill-row"><span>Items subtotal</span><strong>₹<span id="subtotal">0</span></strong></div>
+        <div class="bill-row"><span>Delivery charge</span><strong>₹{{ delivery_charge }}</strong></div>
+        <div class="bill-row total"><span>Total</span><strong>₹<span id="grand-total">{{ delivery_charge }}</span></strong></div>
+        <button class="full" type="submit">Order Place Karein</button>
+      </aside>
+    </section>
+  </form>
+</main>
+{% endblock %}
+{% block scripts %}
+<script>
+window.deliveryPercent={{ delivery_percent }};
+window.minimumDeliveryCharge={{ minimum_delivery_charge }};
+window.freeDeliveryAbove={{ free_delivery_above }};
+window.couponCode={{ coupon_code|tojson }};
+window.couponPercent=10;
+</script>
+{% endblock %}

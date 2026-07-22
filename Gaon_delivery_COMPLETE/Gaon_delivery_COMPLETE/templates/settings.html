@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<main class="container narrow">
+  {% include "admin_nav.html" %}
+  <section class="card">
+    <h1>App settings</h1>
+    <form method="post">
+      <label>Delivery charge ₹</label>
+      <input type="number" name="delivery_charge" value="{{ delivery_charge }}" min="0" required>
+      <label>WhatsApp number (country code ke saath)</label>
+      <input name="whatsapp_number" value="{{ whatsapp_number }}" placeholder="9198XXXXXXXX">
+
+      <label>Delivery percentage</label>
+      <input type="number" name="delivery_percent" value="{{ delivery_percent }}" min="0" max="100">
+
+      <label>Minimum delivery charge ₹</label>
+      <input type="number" name="minimum_delivery_charge" value="{{ minimum_delivery_charge }}" min="0">
+
+      <label>Free delivery above ₹</label>
+      <input type="number" name="free_delivery_above" value="{{ free_delivery_above }}" min="0">
+
+      <label>UPI ID</label>
+      <input name="upi_id" value="{{ upi_id }}" placeholder="name@bank">
+
+      <label>Coupon code</label>
+      <input name="coupon_code" value="{{ coupon_code }}">
+
+      <label>Coupon discount %</label>
+      <input type="number" name="coupon_percent" value="{{ coupon_percent }}" min="0" max="100">
+
+      <p class="hint">Real Razorpay verification aur automatic WhatsApp API deployment ke time keys se connect honge.</p>
+      <button class="full" type="submit">Save settings</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

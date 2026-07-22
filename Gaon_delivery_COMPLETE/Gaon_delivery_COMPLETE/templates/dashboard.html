@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<main class="container">
+  {% include "admin_nav.html" %}
+  <h1>Dashboard</h1>
+  <div class="stats">
+    <div class="stat card"><span>Total orders</span><strong>{{ summary.total_orders or 0 }}</strong></div>
+    <div class="stat card"><span>Delivered sales</span><strong>₹{{ summary.delivered_sales or 0 }}</strong></div>
+    <div class="stat card"><span>Active order items</span><strong>{{ summary.active_shop_orders or 0 }}</strong></div>
+    <div class="stat card"><span>Products</span><strong>{{ products_count }}</strong></div>
+  </div>
+
+  <section class="card">
+    <h2>Low stock products</h2>
+    {% for product in low_stock %}
+    <div class="bill-row"><span>{{ product.name }} · {{ product.shop_name }}</span><strong>{{ product.stock }} left</strong></div>
+    {% else %}<p>Low stock product nahi hai.</p>{% endfor %}
+  </section>
+</main>
+{% endblock %}
